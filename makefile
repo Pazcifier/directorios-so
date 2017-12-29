@@ -1,3 +1,2 @@
 all:
-	gcc -o directorios directorios.c
-	gcc -o proyecto proyecto.c
+	gcc -o pal pal.c
