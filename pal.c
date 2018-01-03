@@ -7,8 +7,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-
-char palabra[256][256]; //Variable para guardar las letras
+char *palabra;
+ //Variable para guardar las letras
 int contador = 0;     //Variable para guardar la posicion de las letras
 
 void listar(const char *name, int indent)
@@ -26,20 +26,20 @@ void listar(const char *name, int indent)
                 continue; // comparamos que el nombre sea igual
             snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
             //printf("%*s[%s]\n", indent, "", entry->d_name);
-            strcpy(palabra[contador], entry->d_name); //Agrega la letra en el array
+            strcat(palabra, entry->d_name); //Agrega la letra en el array
             contador++;
             //printf("Path: %s\n", path); Path para revisar como recorre los directorios
             listar(path, indent + 2);
         }
     }
     closedir(dir);
-    strcpy(palabra[contador], "!"); //Agrega un "!" para indicar fin de rama
+    strcat(palabra, "!"); //Agrega un "!" para indicar fin de rama
     contador++;
 }
 
 
 //IGNORAR
-void imprimir(char unaPalabra[][256]) {
+/*void imprimir(char unaPalabra[][256]) {
 
   int len = sizeof(unaPalabra)/sizeof(char);
 
@@ -49,6 +49,7 @@ void imprimir(char unaPalabra[][256]) {
 }
 
 //Revisa si la palbra es palíndroma
+
 void esPalindroma(char palindroma[][256]) {
   int haciaDerecha = 0;
   int len = sizeof(palindroma)/sizeof(char);
@@ -81,17 +82,14 @@ void creaPalabras() {
 
   esPalindroma(palabraPaldinroma);
 }
-
+*/
 int main(void) {
-
-
+  palabra = malloc (256);
   listar("test-directorios", 0);
 
-  for (int i = 0; i < 20; i++) {  //Como se ve el array después del listar
-    printf("Letra: %s\n", palabra[i]);
-  }
+  printf("%s",palabra);
 
-  creaPalabras();
+  //creaPalabras();
 
   return 0;
 }
