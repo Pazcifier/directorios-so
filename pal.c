@@ -93,10 +93,19 @@ void creaPalabras() {
     }
 
     strcpy(palabraPalindromaEspejo, palabraPalindroma);
+
+    bool turno = true;
     while (strlen(palabraPalindromaEspejo) >= 3) {
-      //palabraPalindromaEspejo = palabraPalindroma;
       esPalindroma(palabraPalindromaEspejo);
-      memmove(palabraPalindromaEspejo, palabraPalindromaEspejo+1, strlen(palabraPalindromaEspejo));
+      if (turno) {
+        //Quita la primera letra
+        memmove(palabraPalindromaEspejo, palabraPalindromaEspejo+1, strlen(palabraPalindromaEspejo));
+        turno = !turno;
+      } else {
+        //quita la última letra
+        //memmove
+        turno = !turno;
+      }
     }
     len--;
   }
