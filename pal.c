@@ -61,15 +61,21 @@ void esPalindroma(char* palindroma) {
 void creaPalabras() {
   char *palabraPalindroma; //El nodo raíz siempre será el mismo así que se guarda como constante
   palabraPalindroma = malloc (sizeof(palabra)/sizeof(char));
-  palabraPalindroma[0] = palabra[0];
+
+  char *palabraPalindromaEspejo;
+  palabraPalindromaEspejo = malloc(sizeof(palabra)/sizeof(char));
 
   int cont = 0; //Contador de "!" para eliminar letras de las palabras
   int indexPalindroma = 1; //Posición del crea palabras
   int indexPalabra = 1; //Posicion de la palabra
   int len = strlen(palabra); //Conocer el tamaño de la palabra
+  int borrador = 0;
 
   while (indexPalabra < len) {
-    while (cont != 0) {
+
+    palabraPalindroma[0] = palabra[0];
+
+    while (cont > 0) {
       palabraPalindroma[indexPalindroma] = '\0';
       indexPalindroma--;
       cont--;
@@ -86,11 +92,12 @@ void creaPalabras() {
       indexPalabra++;
     }
 
-    printf("%s\n",palabraPalindroma);
-    if (strlen(palabraPalindroma) >= 3) {
-      esPalindroma(palabraPalindroma);
+    strcpy(palabraPalindromaEspejo, palabraPalindroma);
+    while (strlen(palabraPalindromaEspejo) >= 3) {
+      //palabraPalindromaEspejo = palabraPalindroma;
+      esPalindroma(palabraPalindromaEspejo);
+      memmove(palabraPalindromaEspejo, palabraPalindromaEspejo+1, strlen(palabraPalindromaEspejo));
     }
-
     len--;
   }
   free(palabraPalindroma);
@@ -99,6 +106,7 @@ void creaPalabras() {
 int main(void) {
   palabra = malloc (256);
   listar("test-directorios", 0);
+  printf("ARBOL [%s]\n", palabra);
   creaPalabras();
   free(palabra);
   return 0;
