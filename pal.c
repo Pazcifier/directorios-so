@@ -61,8 +61,8 @@ void creaPalabras() {
   int indexPalindroma = 1; //Posición del crea palabras
   int indexPalabra = 1; //Posicion de la palabra
   int len = strlen(palabra); //Conocer el tamaño de la palabra
-
-  while (palabra[indexPalabra] != len) {
+  printf("%d",len);
+  while (indexPalabra < len) {
 
     while (cont != 0) {
       palabraPalindroma[indexPalindroma] = '\0';
@@ -81,12 +81,13 @@ void creaPalabras() {
       indexPalabra++;
     }
 
-    //printf("%s\n",palabraPalindroma);
+    printf("%s\n",palabraPalindroma);
     if (strlen(palabraPalindroma) >= 3) {
       esPalindroma(palabraPalindroma);
     }
 
     len--;
+    //palabraPalindroma="";
   }
   free(palabraPalindroma);
 }
