@@ -35,19 +35,25 @@ void listar(const char *name, int indent)
     strcat(palabra, "!"); //Agrega un "!" para indicar fin de rama
     contador++;
 }
-//Revisa si la palbra es palíndroma
 
+//Voltea el string
+void voltear(char* reverso) {
+	int j, copia;
+	for (int i = 0, j = strlen(reverso)-1; i < j; i++, j--) {
+		copia = reverso[i];
+		reverso[i] = reverso[j];
+		reverso[j] = copia;
+	}
+}
+
+//Revisa si la palbra es palíndroma
 void esPalindroma(char* palindroma) {
-  int haciaDerecha = 0;
-  int haciaIzquierda = strlen(palindroma) - 1;
-  if (haciaIzquierda > 1) {
-    while (haciaIzquierda > haciaDerecha) {
-      if (palindroma[haciaDerecha++] != palindroma[haciaIzquierda--]) {
-        return;
-      }else {
-        printf("%s es palindroma\n", palindroma);
-      }
-    }
+  char palindromaReverso[200];
+  strcpy(palindromaReverso, palindroma);
+  voltear(palindromaReverso);
+
+  if (strcmp(palindroma, palindromaReverso) == 0) {
+    printf("%s es palindroma\n", palindroma);
   }
 }
 
@@ -62,8 +68,7 @@ void creaPalabras() {
   int indexPalabra = 1; //Posicion de la palabra
   int len = strlen(palabra); //Conocer el tamaño de la palabra
 
-  while (palabra[indexPalabra] != len) {
-
+  while (indexPalabra < len) {
     while (cont != 0) {
       palabraPalindroma[indexPalindroma] = '\0';
       indexPalindroma--;
