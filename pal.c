@@ -7,8 +7,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-char *palabra;
- //Variable para guardar las letras
+char *palabra; //Variable para guardar las letras
 int contador = 0;     //Variable para guardar la posicion de las letras
 
 void listar(const char *name, int indent)
@@ -38,54 +37,64 @@ void listar(const char *name, int indent)
 }
 //Revisa si la palbra es palíndroma
 
-void esPalindroma(char* sPalindroma, char * primera) {
+void esPalindroma(char* palindroma) {
   int haciaDerecha = 0;
-  char *palindroma = malloc (sizeof(palabra)/sizeof(char));
-  strcat(palindroma,primera);
-  strcat(palindroma,sPalindroma);
-  int haciaIzquierda =strlen(palindroma)-1;
-  if (haciaIzquierda > 1){
+  int haciaIzquierda = strlen(palindroma) - 1;
+  if (haciaIzquierda > 1) {
     while (haciaIzquierda > haciaDerecha) {
-      if (palindroma[haciaDerecha] != palindroma[haciaIzquierda]) {
-        printf("no es palíndroma\n");
+      if (palindroma[haciaDerecha++] != palindroma[haciaIzquierda--]) {
+        return;
       }else {
-        printf("es palindrome\n");
+        printf("%s es palindroma\n", palindroma);
       }
-      haciaDerecha=haciaDerecha+1;
-      haciaIzquierda= haciaIzquierda-1;
     }
   }
 }
 
 //creador de palabras
 void creaPalabras() {
-  char *primera; //El nodo raíz siempre será el mismo así que se guarda como constante
-  primera = malloc (sizeof(palabra)/sizeof(char));
-  primera [0] = palabra[0];
-
-  char *palabraPalindroma; //Se crea la variable para guardar la palabra hecha
+  char *palabraPalindroma; //El nodo raíz siempre será el mismo así que se guarda como constante
   palabraPalindroma = malloc (sizeof(palabra)/sizeof(char));
-  int cont = 1; //Contador para que empiece a crear palabras a partir del segundo
+  palabraPalindroma[0] = palabra[0];
 
-  while (palabra[cont] != '!') { //Mientras que no encuentre un "!" en el array, seguirá agregando letras al array
-  //  strcat(palabraPalindroma, palabra[cont]);
-  int len = strlen(palabraPalindroma);
-        palabraPalindroma[len] = palabra[cont];
-        palabraPalindroma[len+1] = '\0'; //Esto es el strcat para anexar un char a un string
-  //palabraPalindroma[cont] = palabra[cont];
-    cont++;
+  int cont = 0; //Contador de "!" para eliminar letras de las palabras
+  int indexPalindroma = 1; //Posición del crea palabras
+  int indexPalabra = 1; //Posicion de la palabra
+  int len = strlen(palabra); //Conocer el tamaño de la palabra
+
+  while (palabra[indexPalabra] != len) {
+
+    while (cont != 0) {
+      palabraPalindroma[indexPalindroma] = '\0';
+      indexPalindroma--;
+      cont--;
+    }
+
+    while (palabra[indexPalabra] != '!') { //Mientras que no encuentre un "!" en el array, seguirá agregando letras al array
+      palabraPalindroma[indexPalindroma] = palabra[indexPalabra];
+      indexPalabra++;
+      indexPalindroma++;
+    }
+
+    while (palabra[indexPalabra] == '!') {
+      cont++;
+      indexPalabra++;
+    }
+
+    //printf("%s\n",palabraPalindroma);
+    if (strlen(palabraPalindroma) >= 3) {
+      esPalindroma(palabraPalindroma);
+    }
+
+    len--;
   }
-  printf("%s\n",palabraPalindroma);
-  esPalindroma(palabraPalindroma,primera);
+  free(palabraPalindroma);
 }
 
 int main(void) {
   palabra = malloc (256);
   listar("test-directorios", 0);
-
-  printf("%s\n",palabra);
-
   creaPalabras();
-
+  free(palabra);
   return 0;
 }
