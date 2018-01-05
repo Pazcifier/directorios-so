@@ -86,7 +86,7 @@ void creaPalabras() {
       indexPalabra++;
     }
 
-    //printf("%s\n",palabraPalindroma);
+    printf("%s\n",palabraPalindroma);
     if (strlen(palabraPalindroma) >= 3) {
       esPalindroma(palabraPalindroma);
     }
