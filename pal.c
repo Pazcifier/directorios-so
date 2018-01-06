@@ -56,7 +56,7 @@ void copyAndPrint (char *palindroma,int i,int a){
       printf("%s es palindroma\n", p);
     }else {
        voltear(p);
-      printf("%s es palindroma\n", p);
+      printf("%s es palindroma\n", p); //Volteo el resutado, porque aqui agarramos el string volteado por usar a palindromaReverso
     }
 }
 //Revisa si la palbra es palíndroma
@@ -71,14 +71,14 @@ void esPalindroma(char* palindroma) {
     printf("%s es palindroma\n", palindroma);
   }
 */
-  for (int i=0; i <len;i++){
-    if ((len-i) >= 3){
-      if (palindroma[i] == palindroma[len-1]){
-        copyAndPrint(palindroma,i,1);
+  for (int i=0; i <len;i++){ // Recorro todos los caracteres
+    if ((len-i) >= 3){ //Pregunto para asegurarme que sea mayor o igual a 3
+      if (palindroma[i] == palindroma[len-1]){ //Comparo la palalabra con el ultimo, hago un recorrido del primero hasta 3 posiciones antes del ultimo
+        copyAndPrint(palindroma,i,1); //Si se encuentra, llamo a una funcion que me mete en una variable el pedazo de string que deseo imprimir deps de saber que es palindrome
       }
       if (palindromaReverso[i] == palindromaReverso[len-1]){
-        copyAndPrint(palindromaReverso,i,0);
-      }
+        copyAndPrint(palindromaReverso,i,0); //Hago lo mismo con el reverso para segurarme de encontrar los que estan del "ultimo" al primero
+      } // El 0 o 1 que aparece ahi es para saber cuand hay q voltear el pedazo de string para imprimirlo
     }
   }
 /*  for (int i=len-1; i >=0 ;i--){
