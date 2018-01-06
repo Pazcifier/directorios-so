@@ -45,16 +45,49 @@ void voltear(char* reverso) {
 		reverso[j] = copia;
 	}
 }
-
+void copyAndPrint (char *palindroma,int i,int a){
+  int k=0;
+  char *p = malloc(sizeof(palabra)/sizeof(char));
+    for (int j =i; j<strlen(palindroma);j++){
+      p[k]= palindroma[j];
+      k++;
+    }
+    if (a == 1){
+      printf("%s es palindroma\n", p);
+    }else {
+       voltear(p);
+      printf("%s es palindroma\n", p);
+    }
+}
 //Revisa si la palbra es palíndroma
 void esPalindroma(char* palindroma) {
+  int len = strlen(palindroma);
   char palindromaReverso[200];
   strcpy(palindromaReverso, palindroma);
   voltear(palindromaReverso);
+  char *p = malloc(sizeof(palabra)/sizeof(char));
 
-  if (strcmp(palindroma, palindromaReverso) == 0) {
+/*  if (strcmp(palindroma, palindromaReverso) == 0) {
     printf("%s es palindroma\n", palindroma);
   }
+*/
+  for (int i=0; i <len;i++){
+    if ((len-i) >= 3){
+      if (palindroma[i] == palindroma[len-1]){
+        copyAndPrint(palindroma,i,1);
+      }
+      if (palindromaReverso[i] == palindromaReverso[len-1]){
+        copyAndPrint(palindromaReverso,i,0);
+      }
+    }
+  }
+/*  for (int i=len-1; i >=0 ;i--){
+    if ((len-i) <= 3){
+      if (palindroma[i] == palindroma[0]){
+        copyAndPrint(palindroma,i,0);
+      }
+    }
+  }*/
 }
 
 //creador de palabras
@@ -94,18 +127,18 @@ void creaPalabras() {
 
     strcpy(palabraPalindromaEspejo, palabraPalindroma);
 
-    bool turno = true;
-    while (strlen(palabraPalindromaEspejo) >= 3) {
-      esPalindroma(palabraPalindromaEspejo);
-      if (turno) {
+    //bool turno = true;
+    if (strlen(palabraPalindroma) >= 3) {
+      esPalindroma(palabraPalindroma);
+    /*  if (turno) {
         //Quita la primera letra
         memmove(palabraPalindromaEspejo, palabraPalindromaEspejo+1, strlen(palabraPalindromaEspejo));
-        turno = !turno;
+        turno = !turno
       } else {
         //quita la última letra
         //memmove
         turno = !turno;
-      }
+      }*/
     }
     len--;
   }
@@ -113,10 +146,18 @@ void creaPalabras() {
 }
 
 int main(void) {
+  int contD=0;
   palabra = malloc (256);
   listar("test-directorios", 0);
   printf("ARBOL [%s]\n", palabra);
-  creaPalabras();
+  for (int i=0;i<strlen(palabra);i++){
+    if (palabra[i] != "!") {
+      contD++;
+    }
+  }
+  //if (contD<= 20){
+    creaPalabras();
+
   free(palabra);
   return 0;
 }
