@@ -8,7 +8,8 @@
 #include <sys/stat.h>
 
 char *palabra; //Variable para guardar las letras
-int contador = 0;     //Variable para guardar la posicion de las letras
+int contador = 0;
+int contP=0;    //Variable para guardar la posicion de las letras
 
 void listar(const char *name, int indent)
 {
@@ -45,16 +46,65 @@ void voltear(char* reverso) {
 		reverso[j] = copia;
 	}
 }
-
+void copyAndPrint (char *palindroma,int i,int a,int len,int inside){
+  int k=0;
+  char *p = malloc(sizeof(palabra)/sizeof(char));
+  if (inside == 0){
+    for (int j =i; j<strlen(palindroma);j++){
+      p[k]= palindroma[j];
+      k++;
+    }
+  } else {
+    for (int j =i; j<=len;j++){
+      p[k]= palindroma[j];
+      k++;
+    }
+  }
+  if (a == 1){
+    printf("%s es palindroma\n", p);
+  }else {
+     voltear(p);
+    printf("%s es palindroma\n", p); //Volteo el resutado, porque aqui agarramos el string volteado por usar a palindromaReverso
+  }
+}
 //Revisa si la palbra es palíndroma
 void esPalindroma(char* palindroma) {
-  char palindromaReverso[200];
+  int len = strlen(palindroma);
+  int chequeo=0;
+  char *palindromaReverso = malloc (sizeof(palindroma)/sizeof(char));
   strcpy(palindromaReverso, palindroma);
   voltear(palindromaReverso);
-
-  if (strcmp(palindroma, palindromaReverso) == 0) {
-    printf("%s es palindroma\n", palindroma);
+  //char *p = malloc(sizeof(palabra)/sizeof(char));
+ if (strcmp(palindroma, palindromaReverso) == 0) {
+   chequeo = 1;
+ }
+  for (int i=0; i <len;i++){ // Recorro todos los caracteres
+    if ((len-i) >= 3){ //Pregunto para asegurarme que sea mayor o igual a 3
+      if (palindroma[i] == palindroma[len-1]){ //Comparo la palalabra con el ultimo, hago un recorrido del primero hasta 3 posiciones antes del ultimo
+        copyAndPrint(palindroma,i,1,len,0);
+        contP++; //Si se encuentra, llamo a una funcion que me mete en una variable el pedazo de string que deseo imprimir deps de saber que es palindrome
+      }
+      if (chequeo == 0){
+        if (palindromaReverso[i] == palindromaReverso[len-1]){
+          copyAndPrint(palindromaReverso,i,0,len,0);
+          contP++;//Hago lo mismo con el reverso para segurarme de encontrar los que estan del "ultimo" al primero
+        }
+      } // El 0 o 1 que aparece ahi es para saber cuand hay q voltear el pedazo de string para imprimirlo
+    }
   }
+  int j=len-2;
+  while(j>=2){
+    for (int i=1;i<=j;i++){
+      if ((j-i)>=2){
+        if (palindroma[i] == palindroma[j]){ //Comparo la palalabra con el ultimo, hago un recorrido del primero hasta 3 posiciones antes del ultimo
+          copyAndPrint(palindroma,i,1,j,1); //Si se encuentra, llamo a una funcion que me mete en una variable el pedazo de string que deseo imprimir deps de saber que es palindrome
+          contP++;
+        }
+      }
+    }
+    j--;
+  }
+  free(palindromaReverso);
 }
 
 //creador de palabras
@@ -94,18 +144,18 @@ void creaPalabras() {
 
     strcpy(palabraPalindromaEspejo, palabraPalindroma);
 
-    bool turno = true;
-    while (strlen(palabraPalindromaEspejo) >= 3) {
-      esPalindroma(palabraPalindromaEspejo);
-      if (turno) {
+    //bool turno = true;
+    if (strlen(palabraPalindroma) >= 3) {
+      esPalindroma(palabraPalindroma);
+    /*  if (turno) {
         //Quita la primera letra
         memmove(palabraPalindromaEspejo, palabraPalindromaEspejo+1, strlen(palabraPalindromaEspejo));
-        turno = !turno;
+        turno = !turno
       } else {
         //quita la última letra
         //memmove
         turno = !turno;
-      }
+      }*/
     }
     len--;
   }
@@ -113,10 +163,23 @@ void creaPalabras() {
 }
 
 int main(void) {
+  int contD=0;
   palabra = malloc (256);
   listar("test-directorios", 0);
   printf("ARBOL [%s]\n", palabra);
-  creaPalabras();
+  for (int i=0;i<strlen(palabra);i++){
+    if (palabra[i] != '!') {
+      contD++;
+    }
+  }
+  if (contD<= 20){
+    creaPalabras();
+  } else{
+    printf("La cantidad de directorios son maximo 20");
+  }
+  if (contP== 0){
+    printf("No existen");
+  }
   free(palabra);
   return 0;
 }
