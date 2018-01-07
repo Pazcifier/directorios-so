@@ -6,7 +6,13 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-
+#include <malloc.h>
+struct nodo {
+  char palindrome[30];
+  struct nodo *sig;
+};
+typedef struct nodo NODO;
+NODO *first,*last;
 char *palabra; //Variable para guardar las letras
 int contador = 0;
 int contP=0;    //Variable para guardar la posicion de las letras
@@ -37,6 +43,41 @@ void listar(const char *name, int indent)
     contador++;
 }
 
+void agregar (char *pal){
+  NODO *head;
+  head = (NODO *)malloc(sizeof(NODO));
+  strcpy(head->palindrome,pal);
+  head->sig  = NULL;
+  if (first != NULL){
+    last->sig = head;
+    last = head;
+  }else {
+    first = head;
+    last = head;
+  }
+  contP++;
+}
+int comprobar (char *p){
+  NODO *rec;
+  rec = first;
+  while (rec != NULL ){
+    if (strcmp(rec->palindrome, p) == 0){ return 1;}
+    rec = rec->sig;
+
+  }
+  return 0;
+}
+void imprimir (){
+    NODO *rec;
+    rec = first;
+    int cont=1;
+    while (rec != NULL ){
+      if (cont<contP){ printf ("%s,",rec->palindrome);}
+      else {printf("%s palindrome(s)\n",rec->palindrome); }
+      rec = rec->sig;
+      cont++;
+    }
+}
 //Voltea el string
 void voltear(char* reverso) {
 	int j, copia;
@@ -61,10 +102,12 @@ void copyAndPrint (char *palindroma,int i,int a,int len,int inside){
     }
   }
   if (a == 1){
-    printf("%s es palindroma\n", p);
+  //  printf("%s es palindroma\n", p);
+  if (comprobar(p) == 0) {agregar (p);}
   }else {
      voltear(p);
-    printf("%s es palindroma\n", p); //Volteo el resutado, porque aqui agarramos el string volteado por usar a palindromaReverso
+     if (comprobar(p) == 0) {agregar (p);}
+  //  printf("%s es palindroma\n", p); //Volteo el resutado, porque aqui agarramos el string volteado por usar a palindromaReverso
   }
 }
 //Revisa si la palbra es palíndroma
@@ -81,12 +124,12 @@ void esPalindroma(char* palindroma) {
     if ((len-i) >= 3){ //Pregunto para asegurarme que sea mayor o igual a 3
       if (palindroma[i] == palindroma[len-1]){ //Comparo la palalabra con el ultimo, hago un recorrido del primero hasta 3 posiciones antes del ultimo
         copyAndPrint(palindroma,i,1,len,0);
-        contP++; //Si se encuentra, llamo a una funcion que me mete en una variable el pedazo de string que deseo imprimir deps de saber que es palindrome
+      //Si se encuentra, llamo a una funcion que me mete en una variable el pedazo de string que deseo imprimir deps de saber que es palindrome
       }
       if (chequeo == 0){
         if (palindromaReverso[i] == palindromaReverso[len-1]){
           copyAndPrint(palindromaReverso,i,0,len,0);
-          contP++;//Hago lo mismo con el reverso para segurarme de encontrar los que estan del "ultimo" al primero
+        //Hago lo mismo con el reverso para segurarme de encontrar los que estan del "ultimo" al primero
         }
       } // El 0 o 1 que aparece ahi es para saber cuand hay q voltear el pedazo de string para imprimirlo
     }
@@ -97,7 +140,6 @@ void esPalindroma(char* palindroma) {
       if ((j-i)>=2){
         if (palindroma[i] == palindroma[j]){ //Comparo la palalabra con el ultimo, hago un recorrido del primero hasta 3 posiciones antes del ultimo
           copyAndPrint(palindroma,i,1,j,1); //Si se encuentra, llamo a una funcion que me mete en una variable el pedazo de string que deseo imprimir deps de saber que es palindrome
-          contP++;
         }
       }
     }
@@ -152,6 +194,8 @@ void creaPalabras() {
 
 int main(void) {
   int contD=0;
+  first = (NODO *) NULL;
+  last = (NODO *) NULL;
   palabra = malloc (256);
   listar("test-directorios", 0);
   for (int i=0;i<strlen(palabra);i++){
@@ -164,6 +208,7 @@ int main(void) {
   } else{
     printf("La cantidad de directorios son maximo 20");
   }
+  imprimir();
   if (contP== 0){
     printf("No existen\n");
   }
