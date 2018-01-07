@@ -45,9 +45,10 @@ void voltear(char* reverso) {
 		reverso[j] = copia;
 	}
 }
-void copyAndPrint (char *palindroma,int i,int a){
+void copyAndPrint (char *palindroma,int i,int a,int len,int inside){
   int k=0;
   char *p = malloc(sizeof(palabra)/sizeof(char));
+  if (inside == 0){
     for (int j =i; j<strlen(palindroma);j++){
       p[k]= palindroma[j];
       k++;
@@ -58,36 +59,49 @@ void copyAndPrint (char *palindroma,int i,int a){
        voltear(p);
       printf("%s es palindroma\n", p); //Volteo el resutado, porque aqui agarramos el string volteado por usar a palindromaReverso
     }
+  } else {
+    for (int j =i; j<=len;j++){
+      p[k]= palindroma[j];
+      k++;
+    }
+    printf("%s es palindroma\n", p);
+  }
 }
 //Revisa si la palbra es palíndroma
 void esPalindroma(char* palindroma) {
   int len = strlen(palindroma);
+  int chequeo=0;
   char palindromaReverso[200];
   strcpy(palindromaReverso, palindroma);
   voltear(palindromaReverso);
   char *p = malloc(sizeof(palabra)/sizeof(char));
 
-/*  if (strcmp(palindroma, palindromaReverso) == 0) {
-    printf("%s es palindroma\n", palindroma);
-  }
-*/
+ if (strcmp(palindroma, palindromaReverso) == 0) {
+   chequeo = 1;
+ }
   for (int i=0; i <len;i++){ // Recorro todos los caracteres
     if ((len-i) >= 3){ //Pregunto para asegurarme que sea mayor o igual a 3
       if (palindroma[i] == palindroma[len-1]){ //Comparo la palalabra con el ultimo, hago un recorrido del primero hasta 3 posiciones antes del ultimo
-        copyAndPrint(palindroma,i,1); //Si se encuentra, llamo a una funcion que me mete en una variable el pedazo de string que deseo imprimir deps de saber que es palindrome
+        copyAndPrint(palindroma,i,1,len,0); //Si se encuentra, llamo a una funcion que me mete en una variable el pedazo de string que deseo imprimir deps de saber que es palindrome
       }
-      if (palindromaReverso[i] == palindromaReverso[len-1]){
-        copyAndPrint(palindromaReverso,i,0); //Hago lo mismo con el reverso para segurarme de encontrar los que estan del "ultimo" al primero
+      if (chequeo == 0){
+        if (palindromaReverso[i] == palindromaReverso[len-1]){
+          copyAndPrint(palindromaReverso,i,0,len,0); //Hago lo mismo con el reverso para segurarme de encontrar los que estan del "ultimo" al primero
+        }
       } // El 0 o 1 que aparece ahi es para saber cuand hay q voltear el pedazo de string para imprimirlo
     }
   }
-/*  for (int i=len-1; i >=0 ;i--){
-    if ((len-i) <= 3){
-      if (palindroma[i] == palindroma[0]){
-        copyAndPrint(palindroma,i,0);
+  int j=len-2;
+  while(j>=2){
+    for (int i=1;i<=j;i++){
+      if ((j-i)>=2){
+        if (palindroma[i] == palindroma[j]){ //Comparo la palalabra con el ultimo, hago un recorrido del primero hasta 3 posiciones antes del ultimo
+          copyAndPrint(palindroma,i,1,j,1); //Si se encuentra, llamo a una funcion que me mete en una variable el pedazo de string que deseo imprimir deps de saber que es palindrome
+        }
       }
     }
-  }*/
+    j--;
+  }
 }
 
 //creador de palabras
