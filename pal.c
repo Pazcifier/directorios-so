@@ -165,7 +165,7 @@ int main(void) {
     printf("La cantidad de directorios son maximo 20");
   }
   if (contP== 0){
-    printf("No existen");
+    printf("No existen\n");
   }
   free(palabra);
   return 0;
