@@ -154,7 +154,6 @@ int main(void) {
   int contD=0;
   palabra = malloc (256);
   listar("test-directorios", 0);
-  printf("ARBOL [%s]\n", palabra);
   for (int i=0;i<strlen(palabra);i++){
     if (palabra[i] != '!') {
       contD++;
