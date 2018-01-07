@@ -165,12 +165,16 @@ int main(void) {
   listar("test-directorios", 0);
   printf("ARBOL [%s]\n", palabra);
   for (int i=0;i<strlen(palabra);i++){
-    if (palabra[i] != "!") {
+    if (palabra[i] != '!') {
       contD++;
     }
   }
-  //if (contD<= 20){
+  printf("%d",contD);
+  if (contD<= 20){
     creaPalabras();
+  } else{
+    printf("La cantidad de directorios son maximo 20");
+  }
 
   free(palabra);
   return 0;
