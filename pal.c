@@ -74,7 +74,6 @@ void esPalindroma(char* palindroma) {
   char *palindromaReverso = malloc (sizeof(palindroma)/sizeof(char));
   strcpy(palindromaReverso, palindroma);
   voltear(palindromaReverso);
-  //char *p = malloc(sizeof(palabra)/sizeof(char));
  if (strcmp(palindroma, palindromaReverso) == 0) {
    chequeo = 1;
  }
@@ -143,19 +142,8 @@ void creaPalabras() {
     }
 
     strcpy(palabraPalindromaEspejo, palabraPalindroma);
-
-    //bool turno = true;
     if (strlen(palabraPalindroma) >= 3) {
       esPalindroma(palabraPalindroma);
-    /*  if (turno) {
-        //Quita la primera letra
-        memmove(palabraPalindromaEspejo, palabraPalindromaEspejo+1, strlen(palabraPalindromaEspejo));
-        turno = !turno
-      } else {
-        //quita la última letra
-        //memmove
-        turno = !turno;
-      }*/
     }
     len--;
   }
